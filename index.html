@@ -235,7 +235,7 @@
   }
   .lang-carousel{
     position:relative;
-    height:120px;
+    height:86px;
     border:1px solid var(--line);
     border-radius:0.5rem;
     background:var(--panel);
@@ -1019,6 +1019,40 @@
     opacity:0; transition:opacity .28s ease; pointer-events:none;
   }
   #integrity .integrity-row:hover::before{ opacity:1; }
+
+  /* ===== Mobile effort-widget teaser (floating pill, shown only where the desktop bar is hidden) ===== */
+  #effortFab{
+    position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
+    z-index:60; display:flex; align-items:center; gap:0.5rem;
+    background:linear-gradient(135deg,#0071BC,#005A96); color:#fff;
+    border:none; border-radius:999px; padding:0.6rem 1rem;
+    font-size:0.82rem; font-weight:600; cursor:pointer; white-space:nowrap;
+    box-shadow:0 14px 26px -8px rgba(0,90,150,0.5), 0 6px 12px -6px rgba(0,90,150,0.45);
+    animation:effortFloat 3s ease-in-out infinite;
+  }
+  #effortFab .ef-dot{ width:7px; height:7px; border-radius:999px; background:#e8585e; flex-shrink:0; animation:efDot 2.6s ease-out infinite; }
+  #effortFab.calm .ef-dot{ animation:none; }
+  @keyframes effortFloat{
+    0%,100%{ transform:translateX(-50%) translateY(0); box-shadow:0 12px 22px -10px rgba(0,90,150,0.5), 0 5px 10px -6px rgba(0,90,150,0.4); }
+    50%{ transform:translateX(-50%) translateY(-6px); box-shadow:0 22px 32px -10px rgba(0,90,150,0.42), 0 9px 16px -6px rgba(0,90,150,0.35); }
+  }
+  @keyframes efDot{ 0%{ box-shadow:0 0 0 0 rgba(232,88,94,0.7);} 70%{ box-shadow:0 0 0 8px rgba(232,88,94,0);} 100%{ box-shadow:0 0 0 0 rgba(232,88,94,0);} }
+  #effortFab svg{ transition:transform .2s ease; }
+  #effortFab.is-open svg{ transform:rotate(180deg); }
+  #effortFab.dismissed{ animation:none; opacity:0; transform:translateX(-50%) translateY(14px); transition:opacity .45s ease, transform .45s ease; pointer-events:none; }
+
+  /* Pilot form: make the unselected scope placeholder read like the other gray placeholders (not bold/bright) */
+  #pilotScope{ font-weight:400; }
+  #pilotScope:has(option[value=""]:checked){ color:rgba(255,255,255,0.4) !important; }
+  #effortPanel{
+    position:fixed; left:50%; bottom:72px; transform:translateX(-50%) translateY(10px);
+    z-index:60; width:min(330px, calc(100vw - 28px));
+    background:#fff; border:1px solid var(--line); border-radius:0.9rem;
+    box-shadow:0 22px 50px -16px rgba(15,42,74,0.4); padding:1rem 1.1rem 1.1rem;
+    opacity:0; pointer-events:none; transition:opacity .24s ease, transform .24s ease;
+  }
+  #effortPanel.open{ opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+  @media (min-width:1280px){ #effortFab, #effortPanel{ display:none !important; } }
 </style>
 </head>
 <body class="antialiased">
@@ -1141,6 +1175,86 @@
     </div>
   </div>
 </header>
+
+<!-- Mobile effort-widget teaser -->
+<button id="effortFab" type="button" aria-label="See instructor effort versus student benefit">
+  <span class="ef-dot"></span>
+  <span>Estimated instructor effort</span>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+<div id="effortPanel" role="dialog" aria-label="Instructor effort and student benefit">
+  <button id="effortPanelClose" type="button" aria-label="Close" style="position:absolute;top:7px;right:11px;background:none;border:none;font-size:19px;line-height:1;color:var(--ink-soft);cursor:pointer;">&times;</button>
+  <p style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--brand-blue);margin-bottom:0.4rem;">Instructor effort</p>
+  <div id="mew-track" style="position:relative;display:flex;align-items:center;height:30px;width:189px;box-sizing:border-box;background:rgba(232,88,94,0.08);border:1.5px solid #e8585e;border-radius:999px;padding:2px;transition:background .22s,border-color .22s;">
+    <div id="mew-thumb" style="position:absolute;top:2px;bottom:2px;left:2px;width:91px;border-radius:999px;background:#e8585e;transition:left .22s cubic-bezier(.4,0,.2,1),background .22s;z-index:0;pointer-events:none;"></div>
+    <button type="button" onclick="mewSet('0')" id="mew-b0" style="position:relative;z-index:1;width:91px;height:23px;font-size:11px;font-weight:700;border:none;background:transparent;color:#fff;cursor:pointer;line-height:1.05;border-radius:999px;">0<br><span style="font-size:8px;font-weight:600;">nothing to do</span></button>
+    <button type="button" onclick="mewSet('15')" id="mew-b1" style="position:relative;z-index:1;width:91px;height:23px;font-size:11px;font-weight:700;border:none;background:transparent;color:#c94040;cursor:pointer;line-height:1.05;border-radius:999px;">15&ndash;30 min<br><span style="font-size:8px;font-weight:600;">one time, ever</span></button>
+  </div>
+  <div id="mew-arrow" style="color:#e8585e;font-size:1.05rem;line-height:1;margin:0.4rem 0 0.45rem;width:189px;text-align:center;transition:color .22s;">&darr;</div>
+  <p style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#e8585e;margin-bottom:0.4rem;">Students</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:7px;width:189px;height:30px;box-sizing:border-box;background:rgba(232,88,94,0.08);border:1.5px solid #e8585e;border-radius:999px;padding:0.32rem 0.75rem;">
+    <span style="font-size:0.8rem;font-weight:700;color:#e8585e;line-height:1;">24/7</span>
+    <span style="font-size:0.72rem;color:#c94040;">guided support, always</span>
+  </div>
+  <div id="mew-inst" style="opacity:0;max-height:0;overflow:hidden;transition:opacity .22s ease,max-height .3s ease;">
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--brand-blue);margin:0.65rem 0 0.4rem;">Instructor gets</p>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;">
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:5px 8px;border-radius:999px;border:0.5px solid rgba(0,113,188,0.3);background:rgba(0,113,188,0.07);color:#0071BC;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>analytics</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:5px 8px;border-radius:999px;border:0.5px solid rgba(0,113,188,0.3);background:rgba(0,113,188,0.07);color:#0071BC;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6 8 6 16 12 22c6-6 6-14 0-20z"/><line x1="12" y1="2" x2="12" y2="22"/></svg>grounded AI</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:5px 8px;border-radius:999px;border:0.5px solid rgba(0,113,188,0.3);background:rgba(0,113,188,0.07);color:#0071BC;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>aligned AI</span>
+    </div>
+  </div>
+</div>
+<script>
+  function mewSet(v){
+    var track=document.getElementById('mew-track'), thumb=document.getElementById('mew-thumb'),
+        b0=document.getElementById('mew-b0'), b1=document.getElementById('mew-b1'),
+        inst=document.getElementById('mew-inst'), arrow=document.getElementById('mew-arrow');
+    if(!track) return;
+    if(v==='0'){
+      track.style.background='rgba(232,88,94,0.08)'; track.style.borderColor='#e8585e';
+      thumb.style.background='#e8585e'; thumb.style.left='2px';
+      b0.style.color='#fff'; b1.style.color='#c94040';
+      if(arrow) arrow.style.color='#e8585e';
+      inst.style.opacity='0'; inst.style.maxHeight='0';
+    } else {
+      track.style.background='rgba(0,113,188,0.08)'; track.style.borderColor='#0071BC';
+      thumb.style.background='#0071BC'; thumb.style.left='93px';
+      b0.style.color='#0071BC'; b1.style.color='#fff';
+      if(arrow) arrow.style.color='#0071BC';
+      inst.style.opacity='1'; inst.style.maxHeight='140px';
+      window.__akReachedRight = true; // user explored the "15-30 min" state
+    }
+  }
+  (function(){
+    var fab = document.getElementById('effortFab');
+    var panel = document.getElementById('effortPanel');
+    var closeBtn = document.getElementById('effortPanelClose');
+    if (!fab || !panel) return;
+    var dismissTimer = null;
+    function open(){
+      if (dismissTimer){ clearTimeout(dismissTimer); dismissTimer = null; }
+      panel.classList.add('open'); fab.classList.add('calm'); fab.classList.add('is-open');
+    }
+    function close(){
+      panel.classList.remove('open'); fab.classList.remove('is-open');
+      // Session-only: once the user has switched to the "15-30 min" state and folded
+      // the panel back, retire the button after 2s. No persistence, so reopening the
+      // app/page on the device shows the button again.
+      if (window.__akReachedRight){
+        if (dismissTimer) clearTimeout(dismissTimer);
+        dismissTimer = setTimeout(function(){
+          if (!panel.classList.contains('open')) fab.classList.add('dismissed');
+        }, 2000);
+      }
+    }
+    fab.addEventListener('click', function(){ panel.classList.contains('open') ? close() : open(); });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    document.addEventListener('click', function(e){
+      if (panel.classList.contains('open') && !panel.contains(e.target) && !fab.contains(e.target)) close();
+    });
+  })();
+</script>
 <!-- HERO -->
 <section id="top" class="relative overflow-hidden">
   <div class="absolute inset-0 grain pointer-events-none"></div>
@@ -2309,8 +2423,8 @@
     <div class="grid lg:grid-cols-[0.85fr,1.15fr] gap-12 items-center">
       <div>
         <span class="text-xs font-semibold tracking-[0.18em] uppercase" style="color:var(--coral);">Native Multi-Language Support</span>
-        <h2 class="font-display text-2xl lg:text-2xl xl:text-3xl font-semibold mt-4 mb-4">Fluent.<br>From material to dialogue.</h2>
-        <p class="text-base leading-relaxed" style="color:var(--ink-soft);">From foreign-language course materials and recorded lectures to asking questions in any language, Akademai bridges the gap instantly. Interactions flow naturally across languages with zero manual configuration.</p>
+        <h2 class="font-display text-2xl lg:text-2xl xl:text-3xl font-semibold mt-4 mb-4">Fluent.<br>Materials. Dialogue. Interface.</h2>
+        <p class="text-base leading-relaxed" style="color:var(--ink-soft);">Akademai understands lecture recordings and course materials in any language, answers in whatever language a student asks, and runs its entire interface in the chosen language. Complete end-to-end support for content and product, with no setup required.</p>
       </div>
       <div class="card-lift bg-white border hairline rounded-sm p-7">
         <div class="icon-tile mb-5" style="background:var(--coral-soft);">
@@ -2326,10 +2440,31 @@
             <div class="lang-pill" style="background:#FAEEDA; color:#854F0B;"><span class="lang-label">中文</span><span class="lang-phrase">这与上周的阅读材料有什么关系？</span></div>
           </div>
         </div>
+        <div class="mb-5" style="background:var(--panel); border:1px solid var(--line); border-radius:0.6rem; padding:1rem 1.1rem;">
+          <p style="font-weight:700; color:var(--ink); font-size:0.92rem; margin-bottom:0.15rem;">Platform Language</p>
+          <p style="color:var(--ink-soft); font-size:0.72rem; margin-bottom:0.7rem;">Language for the platform interface. Applies to all users.</p>
+          <div style="position:relative;">
+            <div style="display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid var(--line); border-radius:0.45rem; padding:0.4rem 0.7rem; font-size:0.82rem; color:var(--ink); font-weight:600;">
+              <span>English</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div style="margin-top:0.4rem; background:#fff; border:1px solid var(--line); border-radius:0.45rem; box-shadow:0 14px 30px -14px rgba(15,42,74,0.28); overflow:hidden; font-size:0.82rem;">
+              <div style="padding:0.3rem 0.7rem; background:var(--brand-blue); color:#fff; font-weight:600;">English</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">עברית</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">Español</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">Français</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">中文</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">العربية</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">Deutsch</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink);">हिन्दी</div>
+              <div style="padding:0.3rem 0.7rem; color:var(--ink-soft); font-size:0.72rem; border-top:1px solid var(--line);">+ 100 more languages</div>
+            </div>
+          </div>
+        </div>
         <ul class="space-y-3 text-sm" style="color:var(--ink-soft);">
-          <li><span class="font-semibold" style="color:var(--ink);">Auto language recognition</span>: Processes documents in any language</li>
-          <li><span class="font-semibold" style="color:var(--ink);">Multilingual</span>: Supports multi-language course documents</li>
-          <li><span class="font-semibold" style="color:var(--ink);">Fluid chat</span>: Switch languages mid-conversation</li>
+          <li><span class="font-semibold" style="color:var(--ink);">Language-agnostic documents</span>: Processes course materials in any language</li>
+          <li><span class="font-semibold" style="color:var(--ink);">Fluid AI conversations</span>: Chat in any language and switch languages at any time</li>
+          <li><span class="font-semibold" style="color:var(--ink);">Native interface support</span>: Runs the system interface natively in any language</li>
         </ul>
       </div>
     </div>
@@ -2488,6 +2623,7 @@
       <h3 class="text-lg font-semibold text-white mb-1 text-center">Pilot Request Form</h3>
       <input type="text" id="pilotName" name="fullName" required placeholder="Full Name *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="email" id="pilotEmail" name="email" required placeholder="Work Email *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
+      <input type="text" id="pilotPosition" name="position" required placeholder="Position *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="text" id="pilotInstitution" name="institution" required placeholder="Institution Name *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <select id="pilotScope" name="pilotType" required class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2); font-weight:normal;">
         <option value="" selected style="color:#0F2A4A; font-weight:400;">I am requesting a pilot for: *</option>
@@ -2495,7 +2631,7 @@
         <option value="My Department / Institution" style="color:#0F2A4A;">My Department / Institution</option>
       </select>
       <input type="tel" id="pilotPhone" name="phone" placeholder="Phone Number (optional)" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
-      <textarea id="pilotDetails" name="additionalNotes" rows="3" placeholder="Anything else you'd like to share - course(s), department, or specific goals..." class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2 resize-none" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);"></textarea>
+      <textarea id="pilotDetails" name="additionalNotes" rows="2" placeholder="Anything else you'd like to share..." class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2 resize-none" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);"></textarea>
       <button type="submit" id="pilotSubmitBtn" disabled class="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-sm text-white font-semibold transition-all mt-1" style="background:#5a6478; cursor:not-allowed; opacity:0.6;">
         Submit Request
       </button>
@@ -2832,8 +2968,22 @@
             window.scrollTo({ top: Math.max(0, sectionTop - headerHeight), behavior: 'smooth' });
           }
         } else {
-          var top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
-          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+          var sectionTop = target.getBoundingClientRect().top + window.scrollY;
+          var sectionHeight = target.offsetHeight;
+          var avail = window.innerHeight - headerHeight;
+          var scrollTarget;
+          if (sectionHeight <= avail) {
+            // Whole section fits below the header — center it so the entire section is visible
+            scrollTarget = sectionTop - headerHeight - ((avail - sectionHeight) / 2);
+          } else if (targetId === 'reach') {
+            // Tall section whose key content (the bullets) sits at the bottom —
+            // bias toward the bottom so the lower bullets stay visible.
+            scrollTarget = (sectionTop + sectionHeight) - window.innerHeight;
+          } else {
+            // Section is taller than the viewport — align its top just below the header
+            scrollTarget = sectionTop - headerHeight;
+          }
+          window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
         }
       }
     });
@@ -2848,10 +2998,12 @@
     if (!pilotSubmitBtn) return;
     var name = document.getElementById('pilotName');
     var email = document.getElementById('pilotEmail');
+    var position = document.getElementById('pilotPosition');
     var institution = document.getElementById('pilotInstitution');
     var scope = document.getElementById('pilotScope');
     var isValid = name.value.trim() !== ''
       && email.value.trim() !== '' && email.checkValidity()
+      && position.value.trim() !== ''
       && institution.value.trim() !== ''
       && scope.value.trim() !== '';
 
@@ -2868,7 +3020,7 @@
   }
 
   if (pilotForm) {
-    ['pilotName','pilotEmail','pilotInstitution','pilotScope'].forEach(function(id){
+    ['pilotName','pilotEmail','pilotPosition','pilotInstitution','pilotScope'].forEach(function(id){
       var el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', pilotValidate);
