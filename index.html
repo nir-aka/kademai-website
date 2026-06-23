@@ -1022,8 +1022,8 @@
 
   /* ===== Mobile effort-widget teaser (floating pill, shown only where the desktop bar is hidden) ===== */
   #effortFab{
-    position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
-    z-index:60; display:flex; align-items:center; gap:0.5rem;
+    position:fixed; right:20px; bottom:80px;
+    z-index:60; display:flex; align-items:center; justify-content:center; gap:0.5rem; width:170px; box-sizing:border-box;
     background:linear-gradient(135deg,#0071BC,#005A96); color:#fff;
     border:none; border-radius:999px; padding:0.6rem 1rem;
     font-size:0.82rem; font-weight:600; cursor:pointer; white-space:nowrap;
@@ -1033,25 +1033,36 @@
   #effortFab .ef-dot{ width:7px; height:7px; border-radius:999px; background:#e8585e; flex-shrink:0; animation:efDot 2.6s ease-out infinite; }
   #effortFab.calm .ef-dot{ animation:none; }
   @keyframes effortFloat{
-    0%,100%{ transform:translateX(-50%) translateY(0); box-shadow:0 12px 22px -10px rgba(0,90,150,0.5), 0 5px 10px -6px rgba(0,90,150,0.4); }
-    50%{ transform:translateX(-50%) translateY(-6px); box-shadow:0 22px 32px -10px rgba(0,90,150,0.42), 0 9px 16px -6px rgba(0,90,150,0.35); }
+    0%,100%{ transform:translateY(0); box-shadow:0 12px 22px -10px rgba(0,90,150,0.5), 0 5px 10px -6px rgba(0,90,150,0.4); }
+    50%{ transform:translateY(-6px); box-shadow:0 22px 32px -10px rgba(0,90,150,0.42), 0 9px 16px -6px rgba(0,90,150,0.35); }
   }
   @keyframes efDot{ 0%{ box-shadow:0 0 0 0 rgba(232,88,94,0.7);} 70%{ box-shadow:0 0 0 8px rgba(232,88,94,0);} 100%{ box-shadow:0 0 0 0 rgba(232,88,94,0);} }
   #effortFab svg{ transition:transform .2s ease; }
   #effortFab.is-open svg{ transform:rotate(180deg); }
-  #effortFab.dismissed{ animation:none; opacity:0; transform:translateX(-50%) translateY(14px); transition:opacity .45s ease, transform .45s ease; pointer-events:none; }
+  #effortFab.dismissed{ animation:none; opacity:0; transform:translateY(14px); transition:opacity .45s ease, transform .45s ease; pointer-events:none; }
 
   /* Pilot form: make the unselected scope placeholder read like the other gray placeholders (not bold/bright) */
   #pilotScope{ font-weight:400; }
   #pilotScope:has(option[value=""]:checked){ color:rgba(255,255,255,0.4) !important; }
+
+  /* Floating primary CTA -> scrolls to the pilot form */
+  #pilotFab{
+    position:fixed; right:20px; bottom:20px; z-index:55;
+    display:inline-flex; align-items:center; justify-content:center; gap:0.45rem; width:170px; box-sizing:border-box;
+    background:var(--coral); color:#fff; font-weight:600; font-size:0.82rem;
+    padding:0.6rem 1.1rem; border-radius:999px; text-decoration:none; white-space:nowrap;
+    box-shadow:0 12px 28px -8px rgba(232,88,94,0.6);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  #pilotFab:hover{ transform:translateY(-2px); box-shadow:0 16px 34px -8px rgba(232,88,94,0.72); }
   #effortPanel{
-    position:fixed; left:50%; bottom:72px; transform:translateX(-50%) translateY(10px);
+    position:fixed; right:20px; bottom:132px; transform:translateY(10px);
     z-index:60; width:min(330px, calc(100vw - 28px));
     background:#fff; border:1px solid var(--line); border-radius:0.9rem;
     box-shadow:0 22px 50px -16px rgba(15,42,74,0.4); padding:1rem 1.1rem 1.1rem;
     opacity:0; pointer-events:none; transition:opacity .24s ease, transform .24s ease;
   }
-  #effortPanel.open{ opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+  #effortPanel.open{ opacity:1; pointer-events:auto; transform:translateY(0); }
   @media (min-width:1280px){ #effortFab, #effortPanel{ display:none !important; } }
 </style>
 </head>
@@ -1080,7 +1091,21 @@
           </div>
         </div>
       </div>
-      <a href="#tools" class="nav-link underline-grow pb-1">Beyond chat</a>
+      <div class="nav-dropdown">
+        <a href="#tools" class="nav-link underline-grow pb-1 nav-dropdown-trigger">
+          Beyond chat
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-dropdown-menu">
+          <div class="nav-dropdown-menu-inner">
+            <a href="#tool-clarification" class="nav-dropdown-item">AI Clarification</a>
+            <a href="#tool-quiz" class="nav-dropdown-item">Quiz Generation</a>
+            <a href="#tool-studygroup" class="nav-dropdown-item">AI Study Group</a>
+            <a href="#tool-recording" class="nav-dropdown-item">Recording Explainer</a>
+            <a href="#fidelity" class="nav-dropdown-item">Any Course, Any Discipline</a>
+          </div>
+        </div>
+      </div>
       <a href="#experience" class="nav-link underline-grow pb-1">Experience</a>
       <div class="nav-dropdown">
         <a href="#reach" class="nav-link underline-grow pb-1 nav-dropdown-trigger">
@@ -1098,9 +1123,6 @@
       <a href="#security" class="nav-link underline-grow pb-1">Security</a>
     </div>
     <div class="flex items-center gap-3">
-      <a href="#pilot" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-sm text-sm font-semibold text-white transition-transform hover:-translate-y-0.5" style="background:var(--brand-blue);">
-        Request Pilot Access
-      </a>
       <button id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" class="xl:hidden flex items-center justify-center w-10 h-10 border rounded-sm hairline">
         <svg id="menuIconOpen" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2 4.5H16M2 9H16M2 13.5H16" stroke="#0F2A4A" stroke-width="1.5" stroke-linecap="round"/>
@@ -1161,6 +1183,11 @@
         <a href="#persona" class="mobile-nav-link-sub">Pedagogical Alignment</a>
         <a href="#analytics" class="mobile-nav-link-sub">Analytics</a>
         <a href="#tools" class="mobile-nav-link-top">Beyond chat</a>
+        <a href="#tool-clarification" class="mobile-nav-link-sub">AI Clarification</a>
+        <a href="#tool-quiz" class="mobile-nav-link-sub">Quiz Generation</a>
+        <a href="#tool-studygroup" class="mobile-nav-link-sub">AI Study Group</a>
+        <a href="#tool-recording" class="mobile-nav-link-sub">Recording Explainer</a>
+        <a href="#fidelity" class="mobile-nav-link-sub">Any Course, Any Discipline</a>
         <a href="#experience" class="mobile-nav-link-top">Experience</a>
       </div>
       <div class="flex flex-col gap-1">
@@ -1175,11 +1202,11 @@
     </div>
   </div>
 </header>
+<a href="#pilot" id="pilotFab" aria-label="Request Pilot Access">Request Pilot Access</a>
 
 <!-- Mobile effort-widget teaser -->
 <button id="effortFab" type="button" aria-label="See instructor effort versus student benefit">
-  <span class="ef-dot"></span>
-  <span>Estimated instructor effort</span>
+  <span>Instructor effort</span>
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 <div id="effortPanel" role="dialog" aria-label="Instructor effort and student benefit">
@@ -1276,15 +1303,6 @@
         <p class="reveal delay-2 mt-3 text-sm" style="color:var(--ink-soft);">
           Expanding globally, with new institutional partnerships forming across multiple continents.
         </p>
-        <div class="reveal delay-3 mt-10 flex flex-wrap items-center gap-4">
-          <a href="#pilot" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm text-white font-semibold transition-transform hover:-translate-y-0.5" style="background:var(--coral);">
-            Request Pilot Access
-            <span aria-hidden="true">→</span>
-          </a>
-          <a href="https://demo.akademai.ai/login" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-sm font-semibold border hairline transition-colors hover:bg-white" style="color:var(--ink);">
-            See how it works
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -1794,7 +1812,7 @@
       <p class="text-base leading-relaxed font-semibold mt-3" style="color:var(--ink);">Four of many tools, each solving a different part of the learning loop:</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white border hairline rounded-sm p-7 card-lift">
+      <div id="tool-clarification" class="bg-white border hairline rounded-sm p-7 card-lift">
         <div class="icon-tile mb-5" style="background:var(--blue-soft);">
           <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><path d="M4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20H6L4 22V12Z"/><path d="M9 12l2 2 4-4"/></svg>
         </div>
@@ -1816,7 +1834,7 @@
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Instructor control</p><p>Toggle on/off anytime during the course</p></li>
         </ul>
       </div>
-      <div class="bg-white border hairline rounded-sm p-7 card-lift">
+      <div id="tool-quiz" class="bg-white border hairline rounded-sm p-7 card-lift">
         <div class="icon-tile mb-5" style="background:var(--blue-soft);">
           <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><path d="M9 4.5a2.5 2.5 0 0 0-2.5 2.5v.2A2.7 2.7 0 0 0 4.5 9.8v.4a2.6 2.6 0 0 0-1 4.7 2.6 2.6 0 0 0 2.3 3.6 2.6 2.6 0 0 0 4.2 1.4 2.4 2.4 0 0 0 2-1V7a2.5 2.5 0 0 0-3-2.5Z"/><path d="M15 4.5a2.5 2.5 0 0 1 2.5 2.5v.2a2.7 2.7 0 0 1 2 2.6v.4a2.6 2.6 0 0 1 1 4.7 2.6 2.6 0 0 1-2.3 3.6 2.6 2.6 0 0 1-4.2 1.4 2.4 2.4 0 0 1-2-1V7a2.5 2.5 0 0 1 3-2.5Z"/></svg>
         </div>
@@ -1848,7 +1866,7 @@
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Optional topic focus</p><p>Name a topic to scope the whole quiz to it</p></li>
         </ul>
       </div>
-      <div class="bg-white border hairline rounded-sm p-7 card-lift">
+      <div id="tool-studygroup" class="bg-white border hairline rounded-sm p-7 card-lift">
         <div class="icon-tile mb-5" style="background:var(--blue-soft);">
           <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><circle cx="8.5" cy="8" r="2.5"/><circle cx="16" cy="9" r="2"/><path d="M3.5 19v-1.2C3.5 15.7 5.6 14 8.2 14h.6c2.6 0 4.7 1.7 4.7 3.8V19"/><path d="M14 19v-1c0-1.7 1.6-3 3.6-3h.3c1.6 0 3 .9 3.3 2.2"/></svg>
         </div>
@@ -1872,11 +1890,11 @@
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Anonymous</p><p>Student identities protected</p></li>
         </ul>
       </div>
-      <div class="bg-white border hairline rounded-sm p-7 card-lift">
+      <div id="tool-recording" class="bg-white border hairline rounded-sm p-7 card-lift">
         <div class="icon-tile mb-5" style="background:var(--blue-soft);">
           <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><rect x="3" y="4.5" width="18" height="13" rx="1.8"/><path d="M9.5 8.3v5.4l5-2.7-5-2.7Z" fill="var(--brand-blue)" stroke="none"/><path d="M8 20.5h8"/></svg>
         </div>
-        <h3 class="font-semibold text-lg mb-4">Context-aware lecture support</h3>
+        <h3 class="font-semibold text-lg mb-4">Instant Playback Insights</h3>
         <div class="lecture-mock mb-5">
           <div class="lecture-mock-fileinfo">
             <span class="lecture-mock-filename">Intro to programming | Lecture 8</span>
@@ -2216,7 +2234,7 @@
                   </div>
                 </div>
                 <div class="materials-mock-file-meta">
-                  <span>137 MB</span><span>&middot;</span><span>5/2/2026</span><span>&middot;</span><span>Nir Karpati</span>
+                  <span>137 MB</span><span>&middot;</span><span>5/2/2026</span><span>&middot;</span><span>Michael Chang</span>
                 </div>
               </div>
               <div class="materials-mock-file">
@@ -2490,7 +2508,7 @@
             <div class="iphone-notch"></div>
             <div class="iphone-screen">
               <div class="mobile-mock-bar"><span>17:38</span><span>&#9679;&#9679;&#9679;</span></div>
-              <div class="mobile-mock-header">Welcome, Eyal</div>
+              <div class="mobile-mock-header">Welcome, Daniel</div>
               <div class="mobile-mock-card">
                 <p class="mobile-mock-course">Intro to CS and Programming</p>
                 <p class="mobile-mock-meta">LMS-3 &middot; 85 Students</p>
@@ -2623,7 +2641,7 @@
       <h3 class="text-lg font-semibold text-white mb-1 text-center">Pilot Request Form</h3>
       <input type="text" id="pilotName" name="fullName" required placeholder="Full Name *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="email" id="pilotEmail" name="email" required placeholder="Work Email *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
-      <input type="text" id="pilotPosition" name="position" required placeholder="Position *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
+      <input type="text" id="pilotPosition" name="position" placeholder="Position" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="text" id="pilotInstitution" name="institution" required placeholder="Institution Name *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <select id="pilotScope" name="pilotType" required class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2); font-weight:normal;">
         <option value="" selected style="color:#0F2A4A; font-weight:400;">I am requesting a pilot for: *</option>
@@ -2998,12 +3016,10 @@
     if (!pilotSubmitBtn) return;
     var name = document.getElementById('pilotName');
     var email = document.getElementById('pilotEmail');
-    var position = document.getElementById('pilotPosition');
     var institution = document.getElementById('pilotInstitution');
     var scope = document.getElementById('pilotScope');
     var isValid = name.value.trim() !== ''
       && email.value.trim() !== '' && email.checkValidity()
-      && position.value.trim() !== ''
       && institution.value.trim() !== ''
       && scope.value.trim() !== '';
 
@@ -3020,7 +3036,7 @@
   }
 
   if (pilotForm) {
-    ['pilotName','pilotEmail','pilotPosition','pilotInstitution','pilotScope'].forEach(function(id){
+    ['pilotName','pilotEmail','pilotInstitution','pilotScope'].forEach(function(id){
       var el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', pilotValidate);
