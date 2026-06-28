@@ -644,6 +644,26 @@
     .persona-mock-option{ gap:0.55rem; padding:0.65rem 0.75rem; }
   }
   .persona-mock-option.selected{ border-color:var(--brand-blue); background:var(--blue-soft); }
+  /* Make the six options look and behave like raised, pressable buttons */
+  .persona-mock-option{
+    cursor:pointer;
+    background:#fff;
+    box-shadow:0 1px 2px rgba(15,42,74,0.06), 0 2px 6px -2px rgba(15,42,74,0.10);
+    transition:border-color .18s ease, background-color .18s ease, transform .14s ease, box-shadow .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .persona-mock-option:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px -6px rgba(15,42,74,0.20), 0 2px 6px -2px rgba(15,42,74,0.12);
+  }
+  .persona-mock-option:not(.selected):hover{ border-color:var(--brand-blue); background:rgba(0,113,188,0.05); }
+  .persona-mock-option:active{
+    transform:translateY(0) scale(0.98);
+    box-shadow:0 1px 2px rgba(15,42,74,0.10);
+  }
+  .persona-mock-option .persona-mock-icon svg{ stroke:var(--ink-soft); transition:stroke .18s ease; }
+  .persona-mock-option:not(.selected):hover .persona-mock-icon svg{ stroke:var(--brand-blue); }
+  .persona-mock-option.selected .persona-mock-icon svg{ stroke:var(--brand-blue); }
   .persona-mock-icon{
     width:26px; height:26px; border-radius:0.3rem; background:white;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
@@ -773,7 +793,12 @@
   @media (min-width:768px){ .dash-mock-insights-grid{ grid-template-columns:1fr 1fr; } }
 
   /* Product UI mocks: tab shell shared by chat + materials */
-  .app-mock{ background:white; border:1px solid var(--line); border-radius:0.6rem; overflow:hidden; }
+  .app-mock{ background:white; border:1px solid var(--line); border-radius:0.125rem; overflow:hidden; }
+  /* Private Tutor mock + its bullet share one black frame */
+  .pt-frame{ border:1px solid var(--ink); border-radius:0.125rem; overflow:hidden; background:#fff; }
+  .pt-frame > .app-mock{ border:0 !important; border-radius:0; }
+  .pt-frame > .pt-bullet{ margin:0; padding:0.85rem 1rem 0.85rem calc(30% + 0.6rem); }
+  @media (min-width:1024px){ .role-panel .app-mock{ cursor:pointer; } }
   .app-mock-tabs{ display:flex; gap:0.4rem; padding:0.6rem; border-bottom:1px solid var(--line); background:var(--panel); }
   .app-mock-tab{
     flex:1; display:flex; align-items:center; justify-content:center; gap:0.3rem;
@@ -781,6 +806,9 @@
     padding:0.45rem 0.4rem; border-radius:0.35rem; background:white; border:1px solid var(--line);
   }
   .app-mock-tab.active{ background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
+  /* Private Tutor mock: widen the Private Tutor tab, narrow the Materials tab */
+  #ptTabs .app-mock-tab:nth-child(1){ flex:0.85; }
+  #ptTabs .app-mock-tab:nth-child(2){ flex:1.4; }
   .app-mock-body{ display:flex; min-height:13rem; }
 
   /* Chat mock */
@@ -836,9 +864,20 @@
   }
   .chat-mock-scopetoggle{
     display:flex; align-items:center; border:1px solid var(--brand-blue); border-radius:999px; overflow:hidden; flex-shrink:0;
+    cursor:pointer; box-shadow:0 1px 3px rgba(15,42,74,0.14);
+    transition:box-shadow .18s ease, transform .15s ease;
+    animation:scopePulse 2.4s ease-in-out infinite;
   }
-  .chat-mock-scopetoggle span{ padding:0.22rem 0.6rem; font-weight:700; color:var(--brand-blue); }
+  .chat-mock-scopetoggle:hover{ transform:translateY(-1px); box-shadow:0 4px 10px -2px rgba(0,113,188,0.35); animation:none; }
+  .chat-mock-scopetoggle:active{ transform:translateY(0) scale(0.97); }
+  .chat-mock-scopetoggle span{ padding:0.22rem 0.6rem; font-weight:700; color:var(--brand-blue); cursor:pointer; transition:background-color .15s ease, color .15s ease; }
+  .chat-mock-scopetoggle span:not(.active):hover{ background:var(--blue-soft); }
   .chat-mock-scopetoggle span.active{ background:var(--brand-blue); color:white; }
+  @keyframes scopePulse {
+    0%, 100% { box-shadow:0 1px 3px rgba(15,42,74,0.14), 0 0 0 0 rgba(0,113,188,0.40); }
+    50%      { box-shadow:0 1px 3px rgba(15,42,74,0.14), 0 0 0 5px rgba(0,113,188,0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .chat-mock-scopetoggle{ animation:none; } }
   .chat-mock-scopetext{ color:var(--brand-blue); font-weight:500; }
 
   /* Materials / summary mock */
@@ -893,8 +932,9 @@
   .role-card.active-role .role-card-hint svg{ transform:translateY(2px); }
   .role-connector{
     display:none;
-    justify-content:center; margin:0.5rem 0 1.5rem;
+    margin:0.5rem 0 1.5rem;
     color:var(--coral); animation:roleConnectorBounce 1.8s ease-in-out infinite;
+    transition:margin-left 0.3s ease;
   }
   @keyframes roleConnectorBounce{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(4px); } }
   .role-panel-frame{
@@ -904,6 +944,8 @@
   .role-panel-frame.flash{
     box-shadow:0 0 0 3px var(--coral);
   }
+  /* While the red ring is on, turn the images' thin borders on (dark) too */
+  .role-panel-frame.flash .app-mock{ border-color:var(--ink); }
   @media (prefers-reduced-motion: reduce){
     .role-connector{ animation:none; }
     .role-panel-frame{ transition:none; }
@@ -911,12 +953,23 @@
 
   /* Mobile (<lg): each panel always shown, stacked directly under its own card */
   .role-panel{ display:block; margin-top:1.75rem; }
+  /* Each role's card is wrapped in .role-block. On desktop the wrapper dissolves
+     (display:contents) so the card stays the grid item and the layout is unchanged.
+     On mobile the wrapper becomes one thin coral frame around that role's text card
+     plus its image(s), and the individual per-image borders are removed. */
+  .role-block{ display:contents; }
   @media (max-width:1023.98px){
-    /* On mobile the panels are moved inside the role grid; make its background
-       transparent so added gaps show the clean section color, not the line color. */
-    #roleGrid{ background:transparent !important; }
-    /* Extra separation after each role's panel, before the next role's card. */
-    #roleGrid > .role-panel:not(:last-child){ margin-bottom:2.75rem; }
+    #roleGrid{ background:transparent !important; border-width:0; border-radius:0; gap:0; }
+    .role-block{
+      display:block;
+      border:1px solid var(--coral);
+      border-radius:0.7rem;
+      overflow:hidden;
+      background:var(--paper);
+    }
+    .role-block + .role-block{ margin-top:2.75rem; }
+    .role-block .role-panel{ margin-top:0.75rem; padding:0 1.5rem 1.5rem; }
+    .role-block .app-mock{ border:1px solid var(--ink); }
   }
   /* Desktop (>=lg): cards in a row, panels hidden until toggled into the shared frame below */
   @media (min-width:1024px){
@@ -1198,8 +1251,8 @@
         </a>
         <div class="nav-dropdown-menu">
           <div class="nav-dropdown-menu-inner">
-            <a href="#tools" class="nav-dropdown-item"><div class="nd-t">AI Clarification</div><div class="nd-d">Instant, grounded answers on any concept</div></a>
             <a href="#tool-quiz" class="nav-dropdown-item"><div class="nd-t">Quiz Generation</div><div class="nd-d">Self-test sets built from course material</div></a>
+            <a href="#tools" class="nav-dropdown-item"><div class="nd-t">AI Clarification</div><div class="nd-d">Instant, grounded answers on any concept</div></a>
             <a href="#tool-studygroup" class="nav-dropdown-item"><div class="nd-t">AI Study Group</div><div class="nd-d">Collaborative sessions, guided by AI</div></a>
             <a href="#tool-recording" class="nav-dropdown-item"><div class="nd-t">Recording Explainer</div><div class="nd-d">Ask questions about any lecture playback</div></a>
             <a href="#fidelity" class="nav-dropdown-item"><div class="nd-t">Any Course, Any Discipline</div><div class="nd-d">Strong in STEM and the humanities alike</div></a>
@@ -1237,7 +1290,7 @@
     </div>
     <div class="flex items-center gap-3">
       <div id="desktopNavCta" class="hidden xl:flex items-center gap-4">
-        <a href="https://demo.akademai.ai" class="nav-link underline-grow pb-1 text-[13px]">Log in</a>
+        <a href="https://my.akademai.ai/login" class="nav-link underline-grow pb-1 text-[13px]">Log in</a>
         <a href="#pilot" class="nav-cta-btn">Request Pilot Access</a>
       </div>
       <button id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" class="xl:hidden flex items-center justify-center w-10 h-10 border rounded-sm hairline">
@@ -1267,8 +1320,8 @@
         <a href="#persona" class="mobile-nav-link-sub">Pedagogical Alignment</a>
         <a href="#analytics" class="mobile-nav-link-sub">Analytics</a>
         <a href="#tools" class="mobile-nav-link-top">Beyond chat</a>
-        <a href="#tools" class="mobile-nav-link-sub">AI Clarification</a>
         <a href="#tool-quiz" class="mobile-nav-link-sub">Quiz Generation</a>
+        <a href="#tools" class="mobile-nav-link-sub">AI Clarification</a>
         <a href="#tool-studygroup" class="mobile-nav-link-sub">AI Study Group</a>
         <a href="#tool-recording" class="mobile-nav-link-sub">Recording Explainer</a>
         <a href="#fidelity" class="mobile-nav-link-sub">Any Course, Any Discipline</a>
@@ -1287,7 +1340,7 @@
         <a href="#about" class="mobile-nav-link-top">About</a>
       </div>
       <div class="flex flex-col gap-2">
-        <a href="https://demo.akademai.ai" class="mobile-nav-link-top">Log in</a>
+        <a href="https://my.akademai.ai/login" class="mobile-nav-link-top">Log in</a>
         <a href="#pilot" class="mobile-cta-btn">Request Pilot Access</a>
       </div>
     </div>
@@ -1559,7 +1612,7 @@
       </p>
       <div class="grounded-wrap" style="margin-top:1.75rem;">
         <style>
-          .grounded-card{ max-width:600px; border-radius:1rem; padding:1.4rem 1.5rem 1.5rem; box-shadow:0 24px 50px -30px rgba(15,42,74,0.25); }
+          .grounded-card{ max-width:600px; }
           .grounded-q{ display:flex; gap:0.6rem; align-items:flex-start; padding-bottom:1.05rem; margin-bottom:1.05rem; border-bottom:1px solid var(--line); }
           .grounded-tag{ font-size:0.56rem; font-weight:800; letter-spacing:0.09em; text-transform:uppercase; padding:0.24rem 0.5rem; border-radius:0.4rem; flex-shrink:0; line-height:1.2; margin-top:0.15rem; }
           .grounded-tag.q{ color:var(--ink-soft); background:var(--panel); border:1px solid var(--line); }
@@ -1584,18 +1637,18 @@
           .grounded-src:hover .grounded-srcgo{ opacity:1; transform:translateX(2px); color:var(--brand-blue); }
           .grounded-foot{ display:flex; align-items:center; gap:0.45rem; margin-top:1rem; font-size:0.76rem; font-weight:600; color:var(--ink-soft); }
           .grounded-check{ width:1.1rem; height:1.1rem; border-radius:50%; background:var(--coral); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-          .grounded-frame{ max-width:600px; border:1.5px solid #C2CCDA; border-radius:1.1rem; padding:1.15rem; box-shadow:0 16px 40px -24px rgba(15,42,74,0.22); background:#fff; }
-          .grounded-frame-head{ display:flex; align-items:center; gap:0.85rem; margin-bottom:0.9rem; padding-left:0.15rem; }
-          .grounded-frame-head .gf-title{ font-weight:700; color:var(--ink); font-size:0.98rem; }
+          .grounded-frame{ max-width:600px; }
+          .grounded-frame-head{ display:flex; align-items:center; gap:0.85rem; margin-bottom:0.6rem; padding-left:0.15rem; }
+          .grounded-frame-head .gf-title{ font-weight:700; color:var(--ink); font-size:0.95rem; }
         </style>
-        <div class="grounded-frame">
+        <div class="grounded-frame card-lift bg-white border hairline rounded-sm p-7 lg:p-9">
           <div class="grounded-frame-head">
             <div class="icon-tile" style="background:var(--blue-soft);">
               <svg class="icon-lg" viewBox="0 0 24 24" fill="var(--brand-blue)" aria-hidden="true"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
             </div>
             <span class="gf-title">Grounded Answers</span>
           </div>
-        <div class="card-lift bg-white border hairline grounded-card">
+        <div class="bg-white grounded-card">
           <div class="grounded-q">
             <span class="grounded-tag q">Student</span>
             <p>Why does grinding the sample speed up the reaction we ran in lab?</p>
@@ -1911,33 +1964,9 @@
       <span class="text-xs font-semibold tracking-[0.18em] uppercase" style="color:var(--coral);">Advanced Learning Tools</span>
       <h2 class="font-display text-2xl lg:text-2xl xl:text-3xl font-semibold mt-4 mb-4">More than a chat. A total ecosystem.</h2>
       <p class="text-base leading-relaxed" style="color:var(--ink-soft);">Purpose-built features that turn one-off answers into a real study habit.</p>
-      <p class="text-base leading-relaxed font-semibold mt-3" style="color:var(--ink);">Four of many tools, each solving a different part of the learning loop:</p>
+      <p class="text-base leading-relaxed font-semibold mt-3" style="color:var(--ink);">Five (5) of many tools, each solving a different part of the learning loop:</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <div id="tool-clarification" class="bg-white border hairline rounded-sm p-7 card-lift">
-        <div style="display:flex; align-items:center; gap:0.85rem; margin-bottom:1.25rem;">
-          <div class="icon-tile" style="background:var(--blue-soft);">
-            <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><path d="M4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20H6L4 22V12Z"/><path d="M9 12l2 2 4-4"/></svg>
-          </div>
-          <h3 class="font-semibold text-lg" style="margin:0;">AI answers. Still stuck? An expert can clarify.</h3>
-        </div>
-        <div class="clarify-mock mb-5">
-          <div class="clarify-mock-pane">
-            <p class="clarify-mock-label">Student asks</p>
-            <p class="clarify-mock-q">Are this correct commands?</p>
-            <span class="clarify-mock-pill">Pending</span>
-          </div>
-          <div class="clarify-mock-pane staff">
-            <p class="clarify-mock-label">Staff replies</p>
-            <p class="clarify-mock-reply">Yes - and here's why the quotes matter...</p>
-          </div>
-        </div>
-        <ul class="space-y-3 text-sm" style="color:var(--ink-soft);">
-          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Student access</p><p>Ask an instructor to verify AI responses</p></li>
-          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Staff response</p><p>Faculty add context directly on the response</p></li>
-          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Instructor control</p><p>Toggle on/off anytime during the course</p></li>
-        </ul>
-      </div>
       <div id="tool-quiz" class="bg-white border hairline rounded-sm p-7 card-lift">
         <div style="display:flex; align-items:center; gap:0.85rem; margin-bottom:1.25rem;">
           <div class="icon-tile" style="background:var(--blue-soft);">
@@ -1970,6 +1999,30 @@
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">10-question quizzes</p><p>Auto-generated from real course materials</p></li>
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Targets challenging spots</p><p>Built from chat history and previously missed questions</p></li>
           <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Optional topic focus</p><p>Name a topic to scope the whole quiz to it</p></li>
+        </ul>
+      </div>
+      <div id="tool-clarification" class="bg-white border hairline rounded-sm p-7 card-lift">
+        <div style="display:flex; align-items:center; gap:0.85rem; margin-bottom:1.25rem;">
+          <div class="icon-tile" style="background:var(--blue-soft);">
+            <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.6"><path d="M4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20H6L4 22V12Z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3 class="font-semibold text-lg" style="margin:0;">AI answers. Still stuck? An expert can clarify.</h3>
+        </div>
+        <div class="clarify-mock mb-5">
+          <div class="clarify-mock-pane">
+            <p class="clarify-mock-label">Student asks</p>
+            <p class="clarify-mock-q">Are this correct commands?</p>
+            <span class="clarify-mock-pill">Pending</span>
+          </div>
+          <div class="clarify-mock-pane staff">
+            <p class="clarify-mock-label">Staff replies</p>
+            <p class="clarify-mock-reply">Yes - and here's why the quotes matter...</p>
+          </div>
+        </div>
+        <ul class="space-y-3 text-sm" style="color:var(--ink-soft);">
+          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Student access</p><p>Ask an instructor to verify AI responses</p></li>
+          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Staff response</p><p>Faculty add context directly on the response</p></li>
+          <li><p class="font-semibold mb-0.5" style="color:var(--ink);">Instructor control</p><p>Toggle on/off anytime during the course</p></li>
         </ul>
       </div>
       <div id="tool-studygroup" class="bg-white border hairline rounded-sm p-7 card-lift">
@@ -2099,14 +2152,15 @@
 <section id="experience" class="border-t" style="border-color:var(--line); background:var(--panel); padding-top:57px; padding-bottom:6rem;">
 
   <div class="max-w-6xl mx-auto px-6 lg:px-8">
-    <div class="max-w-2xl mb-14">
+    <div class="max-w-2xl mb-6">
       <span class="text-xs font-semibold tracking-[0.18em] uppercase" style="color:var(--coral);">User Experience</span>
       <h2 class="font-display text-2xl lg:text-2xl xl:text-3xl font-semibold mt-4">Built for every seat at the table.</h2>
-      <p class="mt-4 text-base leading-relaxed" style="color:var(--ink-soft);">One platform. Three distinct experiences. Built for what each needs.</p>
+      <p class="mt-4 text-base leading-relaxed" style="color:var(--ink-soft);">One platform. Three tailored experiences. Click below to explore:</p>
     </div>
 
     <div id="roleGrid" class="grid lg:grid-cols-3 gap-px hairline border rounded-sm overflow-hidden" style="border-color:var(--line); background:var(--line);">
       <!-- Student -->
+      <div class="role-block">
       <div class="bg-[#FBFAF7] p-8 lg:p-9 role-card active-role" data-role="student" id="cardStudent">
         <div class="flex items-center gap-3 mb-7">
           <svg width="40" height="40" viewBox="0 0 40 40" class="flex-shrink-0">
@@ -2139,8 +2193,10 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v13M6 13l6 6 6-6"/></svg>
         </div>
       </div>
+      </div>
 
       <!-- Instructor -->
+      <div class="role-block">
       <div class="bg-[#FBFAF7] p-8 lg:p-9 role-card" data-role="instructor" id="cardInstructor">
         <div class="flex items-center gap-3 mb-7">
           <svg width="40" height="40" viewBox="0 0 40 40" class="flex-shrink-0">
@@ -2173,8 +2229,10 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v13M6 13l6 6 6-6"/></svg>
         </div>
       </div>
+      </div>
 
       <!-- Admin -->
+      <div class="role-block">
       <div class="bg-[#FBFAF7] p-8 lg:p-9 role-card" data-role="admin" id="cardAdmin">
         <div class="flex items-center gap-3 mb-7">
           <svg width="40" height="40" viewBox="0 0 40 40" class="flex-shrink-0">
@@ -2207,6 +2265,7 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v13M6 13l6 6 6-6"/></svg>
         </div>
       </div>
+      </div>
     </div>
 
     <div class="role-connector" aria-hidden="true">
@@ -2219,9 +2278,10 @@
       <!-- Student panel -->
       <div class="role-panel active-panel" data-panel="student">
         <div class="grid lg:grid-cols-2 gap-6">
+          <div class="pt-frame">
           <!-- Private Tutor chat mock -->
           <div class="card-lift app-mock">
-            <div class="app-mock-tabs">
+            <div class="app-mock-tabs" id="ptTabs">
               <span class="app-mock-tab">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V6.5C4 5.4 4.9 4.5 6 4.5h6v15H6c-1.1 0-2-.9-2-2Z"/><path d="M20 19.5V6.5c0-1.1-.9-2-2-2h-6v15h6c1.1 0 2-.9 2-2Z"/></svg>
                 Materials
@@ -2236,7 +2296,7 @@
               </span>
             </div>
             <div class="app-mock-body">
-              <div class="chat-mock-sidebar">
+              <div class="chat-mock-sidebar" style="width:30%;">
                 <div class="chat-mock-sidebar-header">
                   <p class="chat-mock-sidebar-title">Chat History</p>
                   <div class="chat-mock-sidebar-collapse">
@@ -2275,12 +2335,12 @@
                 <p class="chat-mock-welcome">Welcome to your AI tutor!</p>
                 <p class="chat-mock-sub">Ask me anything about your course materials.</p>
                 </div>
-                <div class="chat-mock-scoperow">
-                  <span class="chat-mock-scopetoggle">
-                    <span class="active">Course</span>
-                    <span>Global</span>
+                <div class="chat-mock-scoperow" id="ptScopeRow">
+                  <span class="chat-mock-scopetoggle" title="Select answer scope">
+                    <span class="active" data-scope="course">Course</span>
+                    <span data-scope="global">Global</span>
                   </span>
-                  <span class="chat-mock-scopetext">Answers only from course materials with source references</span>
+                  <span class="chat-mock-scopetext">Answers tailored to course materials with source references</span>
                 </div>
                 <div class="chat-mock-inputrow">
                   <span class="chat-mock-input">Create a chat session to start&hellip;</span>
@@ -2290,6 +2350,8 @@
                 </div>
               </div>
             </div>
+          </div>
+          <p class="pt-bullet text-sm" style="color:var(--ink-soft);"><span class="font-semibold" style="color:var(--ink);">Course/Global switch:</span><br>Toggle between course focus and adding general knowledge, always backed by precise course references.</p>
           </div>
 
           <!-- Materials / AI summary mock -->
@@ -2565,7 +2627,7 @@
       <div class="card-lift bg-white border hairline rounded-sm p-6 flex flex-col">
         <div style="display:flex; align-items:center; gap:0.45rem; margin-bottom:0.15rem;">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
-          <p style="font-weight:700; color:var(--ink); font-size:0.95rem; margin:0;">Chat</p>
+          <p style="font-weight:700; color:var(--ink); font-size:0.95rem; margin:0;">Chat Language</p>
         </div>
         <p style="color:var(--ink-soft); font-size:0.75rem; margin-bottom:0.9rem;">Students ask in any language; answers come back in the same one.</p>
         <div class="flex-1 flex flex-col justify-center">
@@ -3097,6 +3159,21 @@
     var cardByRole = {};
     cards.forEach(function(c){ cardByRole[c.getAttribute('data-role')] = c; });
 
+    var connector = document.querySelector('.role-connector');
+
+    function positionConnector(role) {
+      if (!connector || !isDesktopLayout) return;
+      var card = cardByRole[role];
+      var grid = document.getElementById('roleGrid');
+      if (!card || !grid) return;
+      var cardRect = card.getBoundingClientRect();
+      var gridRect = grid.getBoundingClientRect();
+      // center of the active card relative to the grid's left edge
+      var cardCenter = (cardRect.left - gridRect.left) + cardRect.width / 2;
+      // connector icon is 22px wide; subtract half to center the icon on cardCenter
+      connector.style.marginLeft = (cardCenter - 11) + 'px';
+    }
+
     function arrangeForMobile(){
       // Place each panel directly after its own card, all visible (no toggling needed on mobile)
       ['student','instructor','admin'].forEach(function(role){
@@ -3108,6 +3185,7 @@
       });
       panels.forEach(function(p){ p.classList.add('active-panel'); });
       if (labelWrap) labelWrap.style.display = 'none';
+      if (frame) frame.classList.remove('flash');
     }
 
     function arrangeForDesktop(){
@@ -3124,6 +3202,9 @@
       var activeRole = activeCard ? activeCard.getAttribute('data-role') : 'student';
       panels.forEach(function(p){ p.classList.toggle('active-panel', p.getAttribute('data-panel') === activeRole); });
       if (label && labels[activeRole]) label.textContent = labels[activeRole];
+      if (frame) frame.classList.add('flash'); // ring on for the currently selected role
+      // position arrow under the active card (defer so layout has settled)
+      setTimeout(function(){ positionConnector(activeRole); }, 50);
     }
 
     function syncLayout(){
@@ -3138,14 +3219,8 @@
       cards.forEach(function(c){ c.classList.toggle('active-role', c.getAttribute('data-role') === role); });
       panels.forEach(function(p){ p.classList.toggle('active-panel', p.getAttribute('data-panel') === role); });
       if (label && labels[role]) label.textContent = labels[role];
-
-      if (frame) {
-        frame.classList.remove('flash');
-        void frame.offsetWidth;
-        frame.classList.add('flash');
-        if (flashTimeout) clearTimeout(flashTimeout);
-        flashTimeout = setTimeout(function(){ frame.classList.remove('flash'); }, 900);
-      }
+      if (frame) frame.classList.add('flash'); // red ring stays on for the selected role
+      positionConnector(role);
 
       if (opts && opts.scroll && frame && 'scrollIntoView' in frame) {
         var rect = frame.getBoundingClientRect();
@@ -3156,12 +3231,23 @@
       }
     }
 
+    // Selecting a role (Student is the default). Click only, no hover. The selection
+    // and its red ring stay on until another role is clicked.
     cards.forEach(function(card){
       var role = card.getAttribute('data-role');
-      card.addEventListener('mouseenter', function(){ showRole(role, { scroll:false }); });
       card.addEventListener('click', function(){ showRole(role, { scroll:true }); });
       card.addEventListener('focus', function(){ showRole(role, { scroll:true }); });
       card.setAttribute('tabindex', '0');
+    });
+
+    // Click an image in a panel -> select that role (same as clicking its card)
+    document.querySelectorAll('.role-panel .app-mock').forEach(function(mock){
+      mock.addEventListener('click', function(){
+        if (!isDesktopLayout) return;
+        var panel = mock.closest('.role-panel');
+        var role = panel ? panel.getAttribute('data-panel') : null;
+        if (role) showRole(role, { scroll:false });
+      });
     });
 
     // Nav "Experience" dropdown -> scroll to the section and activate the chosen role lens
@@ -3182,6 +3268,12 @@
     } else if (DESKTOP_MQ.addListener) {
       DESKTOP_MQ.addListener(syncLayout);
     }
+    // Reposition connector arrow when window is resized
+    window.addEventListener('resize', function(){
+      if (!isDesktopLayout) return;
+      var activeCard = document.querySelector('.role-card.active-role');
+      if (activeCard) positionConnector(activeCard.getAttribute('data-role'));
+    });
   })();
   var mobileMenu = document.getElementById('mobileMenu');
   var iconOpen = document.getElementById('menuIconOpen');
@@ -3444,6 +3536,37 @@
   })();
 </script>
 
+  <script>
+    (function(){
+      var opts = document.querySelectorAll('.persona-mock-option');
+      opts.forEach(function(opt){
+        opt.addEventListener('click', function(){
+          opts.forEach(function(o){ o.classList.remove('selected'); });
+          opt.classList.add('selected');
+        });
+      });
+    })();
+  </script>
+  <script>
+    (function(){
+      var row = document.getElementById('ptScopeRow');
+      if (!row) return;
+      var txt = row.querySelector('.chat-mock-scopetext');
+      var texts = {
+        course: 'Answers tailored to course materials with source references',
+        global: 'Answers tailored to course materials, expanded with general knowledge and source references'
+      };
+      var opts = row.querySelectorAll('.chat-mock-scopetoggle span[data-scope]');
+      opts.forEach(function(opt){
+        opt.addEventListener('click', function(){
+          opts.forEach(function(s){ s.classList.remove('active'); });
+          opt.classList.add('active');
+          var scope = opt.getAttribute('data-scope');
+          if (txt && texts[scope]) txt.textContent = texts[scope];
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
 <script>
