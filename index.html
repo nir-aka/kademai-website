@@ -345,6 +345,42 @@
   .fidelity-chat{
     background:var(--panel); border:1px solid var(--line); border-radius:0.5rem; padding:1rem;
   }
+  .fidelity-demo-grid{
+    display:grid; grid-template-columns:1fr; gap:1rem;
+  }
+  @media (min-width:768px){ .fidelity-demo-grid{ grid-template-columns:1fr 1fr; } }
+  .fidelity-demo-label{
+    font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--brand-blue); margin-bottom:0.5rem;
+  }
+  .fidelity-course-tag{
+    display:inline-block; font-size:0.68rem; font-weight:600; color:var(--ink-soft);
+    background:var(--panel); border:1px solid var(--line); padding:0.15rem 0.6rem;
+    border-radius:999px; margin-bottom:0.5rem;
+  }
+  .fidelity-derivation{
+    font-family:'Source Serif 4',serif; font-size:0.76rem; line-height:1.5;
+    color:var(--ink-soft); padding:0.15rem 0;
+  }
+  .fidelity-subhead{
+    font-size:0.72rem; font-weight:700; color:var(--ink); margin:0.65rem 0 0.25rem 0;
+  }
+  .fidelity-prompt{
+    font-size:0.8rem; color:var(--brand-blue); margin:0.15rem 0;
+  }
+  .fidelity-sources-row{
+    display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.7rem; padding-top:0.6rem;
+    border-top:1px solid var(--line);
+  }
+  .fidelity-source-chip{
+    font-size:0.68rem; font-weight:600; color:var(--ink-soft); background:var(--panel);
+    border:1px solid var(--line); padding:0.2rem 0.55rem; border-radius:0.3rem;
+  }
+  .fidelity-mode-pill{
+    display:inline-block; font-size:0.66rem; font-weight:700; letter-spacing:0.03em;
+    color:var(--coral-text); background:var(--coral-soft); border:1px solid var(--coral-soft);
+    padding:0.2rem 0.6rem; border-radius:999px; margin-bottom:0.7rem;
+  }
   .fidelity-chat-user{
     display:flex; justify-content:flex-end; margin-bottom:0.65rem;
   }
@@ -775,6 +811,60 @@
     display:inline-flex; align-items:center; justify-content:center;
     padding:0.65rem 1.5rem; border-radius:0.4rem; font-size:0.85rem; font-weight:600;
     background:var(--brand-blue); color:white;
+  }
+  .fp-overlay{
+    position:fixed; inset:0; background:rgba(15,42,74,0.55);
+    display:flex; align-items:center; justify-content:center;
+    z-index:200; padding:1.5rem; overflow-y:auto;
+  }
+  .fp-overlay.hidden{ display:none; }
+  .fp-card{
+    background:white; border-radius:0.6rem; padding:2.25rem 2rem;
+    max-width:480px; width:100%; text-align:left;
+    box-shadow:0 20px 50px rgba(15,42,74,0.25);
+    max-height:90vh; overflow-y:auto;
+  }
+  .fp-eyebrow{
+    display:inline-flex; align-items:center; font-size:0.62rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.05em; color:var(--coral-text);
+    background:var(--coral-soft); border-radius:999px; padding:0.2rem 0.6rem; margin-bottom:0.75rem;
+  }
+  .fp-title{ font-size:1.3rem; font-weight:700; color:var(--ink); margin-bottom:0.75rem; line-height:1.3; }
+  .fp-para{ font-size:0.88rem; color:var(--ink-soft); line-height:1.55; margin-bottom:0.9rem; }
+  .fp-benefits{ margin:0 0 1.1rem 0; padding:0; list-style:none; }
+  .fp-benefits li{
+    font-size:0.85rem; color:var(--ink-soft); line-height:1.5; margin-bottom:0.45rem;
+    padding-left:1.3rem; position:relative;
+  }
+  .fp-benefits li::before{
+    content:''; position:absolute; left:0; top:0.4rem; width:6px; height:6px;
+    border-radius:50%; background:var(--coral);
+  }
+  .fp-explore-label{ font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); margin-bottom:0.5rem; }
+  .fp-explore-links{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.1rem; }
+  .fp-explore-link{
+    font-size:0.78rem; font-weight:600; color:var(--brand-blue);
+    border:1px solid var(--line); border-radius:0.35rem; padding:0.4rem 0.7rem;
+    cursor:pointer; transition:background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .fp-explore-link:hover{ background:var(--brand-blue); color:#fff; border-color:var(--brand-blue); transform:translateY(-1px); }
+  .fp-contact{ font-size:0.83rem; color:var(--ink-soft); line-height:1.6; margin-bottom:1.25rem; padding-top:0.9rem; border-top:1px solid var(--line); }
+  .fp-contact a{ color:var(--brand-blue); font-weight:600; }
+  .fp-actions{ display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
+  .fp-apply-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:0.65rem 1.4rem; border-radius:0.4rem; font-size:0.85rem; font-weight:600;
+    background:var(--coral); color:white; cursor:pointer; border:none;
+    transition:background .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .fp-apply-btn:hover{ background:var(--coral-text); transform:translateY(-1px); box-shadow:0 8px 18px -6px rgba(232,88,94,0.6); }
+  .fp-close-link{
+    font-size:0.82rem; font-weight:600; color:var(--ink-soft); cursor:pointer;
+    padding:0.65rem 0.5rem;
+  }
+  .fp-close-x{
+    position:absolute; top:0.9rem; right:1.1rem; background:none; border:none;
+    font-size:1.3rem; line-height:1; color:var(--ink-soft); cursor:pointer;
   }
   .dash-mock-bar-row{
     display:flex; align-items:center; gap:0.55rem; margin-bottom:0.32rem;
@@ -1214,6 +1304,18 @@
   .nav-cta-btn{ display:inline-flex; align-items:center; background:var(--coral); color:#fff; padding:0.5rem 1rem; border-radius:0.4rem; font-weight:600; font-size:13px; white-space:nowrap; transition:transform .15s ease, box-shadow .15s ease; }
   .nav-cta-btn:hover{ transform:translateY(-1px); box-shadow:0 8px 18px -6px rgba(232,88,94,0.6); color:#fff; }
   .mobile-cta-btn{ display:inline-flex; align-items:center; justify-content:center; background:var(--coral); color:#fff; padding:0.6rem 1.1rem; border-radius:0.4rem; font-weight:600; width:fit-content; }
+  .nav-fp-badge{
+    display:inline-flex; align-items:center; gap:0.35rem;
+    color:var(--coral-text); border:1px solid var(--coral); background:var(--coral-soft);
+    padding:0.4rem 0.75rem; border-radius:999px; font-weight:600; font-size:12.5px;
+    white-space:nowrap; cursor:pointer; transition:background .15s ease, transform .15s ease;
+  }
+  .nav-fp-badge:hover{ background:var(--coral); color:#fff; transform:translateY(-1px); }
+  .mobile-fp-badge{
+    display:inline-flex; align-items:center; gap:0.35rem; width:fit-content;
+    color:var(--coral-text); border:1px solid var(--coral); background:var(--coral-soft);
+    padding:0.5rem 0.9rem; border-radius:999px; font-weight:600; font-size:0.9rem; cursor:pointer;
+  }
   /* On desktop the nav carries the CTA, so retire the floating pilot button there (keep it on mobile, where the nav collapses to a menu). */
   @media (min-width:1400px){ #pilotFab{ display:none !important; } }
 </style>
@@ -1291,6 +1393,7 @@
     <div class="flex items-center gap-3">
       <div id="desktopNavCta" class="hidden xl:flex items-center gap-4">
         <a href="https://my.akademai.ai/login" class="nav-link underline-grow pb-1 text-[13px]">Log in</a>
+        <a href="#" id="fpNavBadge" class="nav-fp-badge">Founding Partner Program</a>
         <a href="#pilot" class="nav-cta-btn">Request Pilot Access</a>
       </div>
       <button id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" class="xl:hidden flex items-center justify-center w-10 h-10 border rounded-sm hairline">
@@ -1341,6 +1444,7 @@
       </div>
       <div class="flex flex-col gap-2">
         <a href="https://my.akademai.ai/login" class="mobile-nav-link-top">Log in</a>
+        <a href="#" id="fpNavBadgeMobile" class="mobile-fp-badge">Founding Partner Program</a>
         <a href="#pilot" class="mobile-cta-btn">Request Pilot Access</a>
       </div>
     </div>
@@ -2133,14 +2237,53 @@
       <div class="border-t" style="border-color:var(--line); margin:1.75rem 0;"></div>
 
       <p class="text-xs font-semibold tracking-[0.1em] uppercase mb-3" style="color:var(--ink-soft);">See it in action</p>
-      <div class="fidelity-chat">
-        <div class="fidelity-chat-user">
-          <div class="fidelity-chat-user-bubble">What's the Fourier transform of g(t) = e<sup>-at&sup2;</sup>cos(&omega;<sub>0</sub>t)?</div>
+      <div class="fidelity-demo-grid">
+        <div>
+          <span class="fidelity-course-tag">EE 320 &middot; Signals &amp; Systems</span>
+          <div class="fidelity-chat">
+            <div class="fidelity-chat-user">
+              <div class="fidelity-chat-user-bubble">What's the Fourier transform of g(t) = e<sup>-at&sup2;</sup>cos(&omega;<sub>0</sub>t)?</div>
+            </div>
+            <div class="fidelity-chat-ai">
+              <div class="fidelity-chat-ai-bubble">
+                <div class="fidelity-derivation">Modulation property: F{f(t)cos(&omega;<sub>0</sub>t)} = &frac12;[F(&omega;&minus;&omega;<sub>0</sub>) + F(&omega;+&omega;<sub>0</sub>)]</div>
+                <div class="fidelity-derivation">Known pair: F{e<sup>-at&sup2;</sup>} = &radic;(&pi;/a)&thinsp;e<sup>-&omega;&sup2;/4a</sup></div>
+                <div class="fidelity-equation">G(&omega;) = &frac12;&radic;(&pi;/a) [e<sup>-(&omega;-&omega;<sub>0</sub>)&sup2;/4a</sup> + e<sup>-(&omega;+&omega;<sub>0</sub>)&sup2;/4a</sup>]</div>
+                <p class="fidelity-answer">A frequency-shifted Gaussian, centered at &plusmn;&omega;<sub>0</sub></p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="fidelity-chat-ai">
-          <div class="fidelity-chat-ai-bubble">
-            <div class="fidelity-equation">G(&omega;) = &frac12;&radic;(&pi;/a) [e<sup>-(&omega;-&omega;<sub>0</sub>)&sup2;/4a</sup> + e<sup>-(&omega;+&omega;<sub>0</sub>)&sup2;/4a</sup>]</div>
-            <p class="fidelity-answer">A frequency-shifted Gaussian, centered at &plusmn;&omega;<sub>0</sub></p>
+        <div>
+          <span class="fidelity-course-tag">ECON 201 &middot; Macroeconomics</span>
+          <div class="fidelity-chat">
+            <div class="fidelity-chat-user">
+              <div class="fidelity-chat-user-bubble">How would a sudden increase in capital stock impact aggregate output?</div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <span class="fidelity-mode-pill">Socratic Method</span>
+            </div>
+            <div class="fidelity-chat-ai">
+              <div class="fidelity-chat-ai-bubble">
+                <p class="fidelity-answer" style="margin-top:0;">What do you think happens to output when capital rises but labor stays constant?</p>
+
+                <p class="fidelity-subhead">A concrete example: Cobb&ndash;Douglas</p>
+                <div class="fidelity-derivation">K = 100, N = 30 &rarr; Y = <strong style="color:var(--ink);">228.61</strong></div>
+                <div class="fidelity-derivation">K = 122.84, N = 30 &rarr; Y = <strong style="color:var(--ink);">245.68</strong></div>
+                <p class="fidelity-prompt">Capital rose 22.84%, output rose only 7.5%&nbsp;&mdash; why might that be?</p>
+
+                <p class="fidelity-subhead">Uncovering the pattern</p>
+                <p class="fidelity-prompt">Does this relate to diminishing marginal product of capital? How would you explain it?</p>
+
+                <p class="fidelity-subhead">Output per worker</p>
+                <div class="fidelity-derivation">Rises from 7.62 to <strong style="color:var(--ink);">8.19</strong></div>
+
+                <div class="fidelity-sources-row">
+                  <span class="fidelity-source-chip">📎 Labor Market &middot; p.40</span>
+                  <span class="fidelity-source-chip">📎 Production &middot; p.5</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2819,7 +2962,7 @@
         <div class="lms-mock mb-5">
           <div class="lms-mock-row">
             <div style="min-width:0;">
-              <p class="lms-mock-name">Manipal Academy of Higher Education</p>
+              <p class="lms-mock-name">Midland State University</p>
             </div>
             <span class="lms-mock-badge">Active</span>
           </div>
@@ -2979,12 +3122,12 @@
     <h2 class="font-display text-3xl lg:text-5xl font-semibold text-white leading-tight">
       Bring the Power of Academic AI<br>to your institution
     </h2>
-    <p class="mt-6 max-w-3xl mx-auto" style="color:#C7D4E5;">
+    <p id="pilotSubtext" class="mt-6 max-w-3xl mx-auto" style="color:#C7D4E5;">
       <span class="block text-base lg:text-lg lg:whitespace-nowrap">Pilot Akademai next semester or start testing today.</span>
       <span class="block text-base lg:text-lg lg:whitespace-nowrap mt-1">Whether for one course or hundreds, setup is plug-and-play with minimal effort.</span>
     </p>
     <form id="pilotForm" action="https://formspree.io/f/xaqzrrgj" method="POST" class="mt-5 max-w-md mx-auto flex flex-col gap-3 text-left">
-      <h3 class="text-lg font-semibold text-white mb-1 text-center">Pilot Request Form</h3>
+      <h3 id="pilotFormTitle" class="text-lg font-semibold text-white mb-1 text-center">Pilot Request Form</h3>
       <input type="text" id="pilotName" name="fullName" required placeholder="Full Name *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="email" id="pilotEmail" name="email" required placeholder="Work Email *" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
       <input type="text" id="pilotPosition" name="position" placeholder="Position" class="w-full px-5 py-2.5 rounded-sm text-sm border-0 focus:ring-2" style="background:rgba(255,255,255,0.08); color:white; outline:1px solid rgba(255,255,255,0.2);" />
@@ -3002,6 +3145,39 @@
     </form>
   </div>
 </section>
+
+<div id="fpOverlay" class="fp-overlay hidden">
+  <div class="fp-card" role="dialog" aria-modal="true" aria-labelledby="fpTitle">
+    <button type="button" id="fpCloseX" class="fp-close-x" aria-label="Close">&times;</button>
+    <span class="fp-eyebrow">By invitation</span>
+    <h3 id="fpTitle" class="fp-title">Founding Partner Program</h3>
+    <p class="fp-para">This first cohort is intentionally small, so we can give each institution real time and attention. We'd like to share more so you can see if it's a fit.</p>
+    <p class="fp-para">The program is built for institutions looking to bring the Akademai platform across multiple courses, typically starting anywhere from 2 to 10 courses, with room to grow.</p>
+    <ul class="fp-benefits">
+      <li>Full platform access</li>
+      <li>White-glove onboarding and support from the founders</li>
+      <li>Input into our product roadmap</li>
+      <li>No cost during the partnership term</li>
+      <li>Optional recognition in our published case studies</li>
+    </ul>
+    <p class="fp-explore-label">Take a few minutes to explore the platform</p>
+    <div class="fp-explore-links">
+      <a href="#solution" class="fp-explore-link fp-explore-item">Grounded to course</a>
+      <a href="#persona" class="fp-explore-link fp-explore-item">Instructor persona</a>
+      <a href="#security" class="fp-explore-link fp-explore-item">Security &amp; compliance</a>
+      <a href="#experience" class="fp-explore-link fp-explore-item">See it in action</a>
+      <a href="#about" class="fp-explore-link fp-explore-item">About us</a>
+    </div>
+    <p class="fp-contact">
+      Prefer to talk it through first? Reach out directly:<br>
+      <a href="mailto:founding_partner@akademai.ai">founding_partner@akademai.ai</a>
+    </p>
+    <div class="fp-actions">
+      <button type="button" id="fpApplyBtn" class="fp-apply-btn">Learn about the Program</button>
+      <span id="fpCloseLink" class="fp-close-link">Continue exploring</span>
+    </div>
+  </div>
+</div>
 
 <div id="pilotThanksOverlay" class="pilot-thanks-overlay hidden">
   <div class="pilot-thanks-card">
@@ -3344,6 +3520,45 @@
     });
   })();
 
+  function scrollToPilotSection(){
+    var target = document.getElementById('pilot');
+    if (!target) return;
+    var headerEl = document.querySelector('header');
+    var headerHeight = headerEl ? headerEl.offsetHeight : 0;
+    var icon = document.getElementById('pilotIcon');
+    var form = document.getElementById('pilotForm');
+    var viewportHeight = window.innerHeight;
+    var availableHeight = viewportHeight - headerHeight;
+
+    if (form) {
+      var formRect = form.getBoundingClientRect();
+      var formTop = formRect.top + window.scrollY;
+      var formBottom = formRect.bottom + window.scrollY;
+      var formHeight = formBottom - formTop;
+
+      var iconTop = icon ? icon.getBoundingClientRect().top + window.scrollY : formTop;
+      var combinedHeight = formBottom - iconTop;
+
+      var scrollTarget;
+      if (combinedHeight <= availableHeight) {
+        // Icon and full form both fit: center the icon+form block in the available space
+        var extraSpace = availableHeight - combinedHeight;
+        scrollTarget = iconTop - headerHeight - (extraSpace / 2);
+      } else if (formHeight <= availableHeight) {
+        // Can't fit icon + form together, but the full form fits alone: prioritize the form
+        var formExtraSpace = availableHeight - formHeight;
+        scrollTarget = formTop - headerHeight - (formExtraSpace / 2);
+      } else {
+        // Form alone is taller than the viewport: align its top just below the header
+        scrollTarget = formTop - headerHeight - 16;
+      }
+      window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
+    } else {
+      var sectionTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: Math.max(0, sectionTop - headerHeight), behavior: 'smooth' });
+    }
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
     link.addEventListener('click', function(e){
       var targetId = link.getAttribute('href').slice(1);
@@ -3354,38 +3569,19 @@
         var headerHeight = headerEl ? headerEl.offsetHeight : 0;
 
         if (targetId === 'pilot') {
-          var icon = document.getElementById('pilotIcon');
-          var form = document.getElementById('pilotForm');
-          var viewportHeight = window.innerHeight;
-          var availableHeight = viewportHeight - headerHeight;
-
-          if (form) {
-            var formRect = form.getBoundingClientRect();
-            var formTop = formRect.top + window.scrollY;
-            var formBottom = formRect.bottom + window.scrollY;
-            var formHeight = formBottom - formTop;
-
-            var iconTop = icon ? icon.getBoundingClientRect().top + window.scrollY : formTop;
-            var combinedHeight = formBottom - iconTop;
-
-            var scrollTarget;
-            if (combinedHeight <= availableHeight) {
-              // Icon and full form both fit: center the icon+form block in the available space
-              var extraSpace = availableHeight - combinedHeight;
-              scrollTarget = iconTop - headerHeight - (extraSpace / 2);
-            } else if (formHeight <= availableHeight) {
-              // Can't fit icon + form together, but the full form fits alone: prioritize the form
-              var formExtraSpace = availableHeight - formHeight;
-              scrollTarget = formTop - headerHeight - (formExtraSpace / 2);
-            } else {
-              // Form alone is taller than the viewport: align its top just below the header
-              scrollTarget = formTop - headerHeight - 16;
-            }
-            window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
-          } else {
-            var sectionTop = target.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: Math.max(0, sectionTop - headerHeight), behavior: 'smooth' });
+          var pilotDetailsEl = document.getElementById('pilotDetails');
+          var pilotFormTitleEl = document.getElementById('pilotFormTitle');
+          if (pilotDetailsEl) {
+            pilotDetailsEl.value = '';
           }
+          if (pilotFormTitleEl) {
+            pilotFormTitleEl.textContent = 'Pilot Request Form';
+          }
+          var pilotSubtextEl = document.getElementById('pilotSubtext');
+          if (pilotSubtextEl) {
+            pilotSubtextEl.innerHTML = '<span class="block text-base lg:text-lg lg:whitespace-nowrap">Pilot Akademai next semester or start testing today.</span><span class="block text-base lg:text-lg lg:whitespace-nowrap mt-1">Whether for one course or hundreds, setup is plug-and-play with minimal effort.</span>';
+          }
+          scrollToPilotSection();
         } else {
           var sectionTop = target.getBoundingClientRect().top + window.scrollY;
           var sectionHeight = target.offsetHeight;
@@ -3474,6 +3670,10 @@
           pilotForm.reset();
           pilotSubmitBtn.textContent = originalLabel;
           pilotValidate(); // returns button to grayed-out/disabled state since fields are now empty
+          var pilotFormTitle = document.getElementById('pilotFormTitle');
+          if (pilotFormTitle) {
+            pilotFormTitle.textContent = 'Pilot Request Form';
+          }
           if (pilotThanksOverlay) {
             pilotThanksOverlay.classList.remove('hidden');
           }
@@ -3500,6 +3700,70 @@
       }
     });
   }
+
+  // Founding Partner Program modal
+  (function(){
+    var fpOverlay = document.getElementById('fpOverlay');
+    var fpNavBadge = document.getElementById('fpNavBadge');
+    var fpNavBadgeMobile = document.getElementById('fpNavBadgeMobile');
+    var fpCloseX = document.getElementById('fpCloseX');
+    var fpCloseLink = document.getElementById('fpCloseLink');
+    var fpApplyBtn = document.getElementById('fpApplyBtn');
+    var fpExploreLinks = document.querySelectorAll('.fp-explore-item');
+    if (!fpOverlay) return;
+
+    function openFp(e){
+      if (e) e.preventDefault();
+      fpOverlay.classList.remove('hidden');
+      var mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+    function closeFp(){
+      fpOverlay.classList.add('hidden');
+    }
+
+    if (fpNavBadge) fpNavBadge.addEventListener('click', openFp);
+    if (fpNavBadgeMobile) fpNavBadgeMobile.addEventListener('click', openFp);
+    if (fpCloseX) fpCloseX.addEventListener('click', closeFp);
+    if (fpCloseLink) fpCloseLink.addEventListener('click', closeFp);
+    fpOverlay.addEventListener('click', function(e){
+      if (e.target === fpOverlay) closeFp();
+    });
+
+    // Explore links close the modal and let the page scroll to the section
+    fpExploreLinks.forEach(function(link){
+      link.addEventListener('click', function(){
+        closeFp();
+      });
+    });
+
+    // Apply button: close modal, pre-select institution scope on the pilot form, scroll to it
+    if (fpApplyBtn) {
+      fpApplyBtn.addEventListener('click', function(){
+        closeFp();
+        var pilotScope = document.getElementById('pilotScope');
+        var pilotDetails = document.getElementById('pilotDetails');
+        var pilotFormTitle = document.getElementById('pilotFormTitle');
+        if (pilotScope) {
+          pilotScope.value = 'My Department / Institution';
+          pilotScope.dispatchEvent(new Event('change'));
+        }
+        if (pilotDetails && !pilotDetails.value) {
+          pilotDetails.value = 'Interested in learning more about the Founding Partner Program.';
+        }
+        if (pilotFormTitle) {
+          pilotFormTitle.textContent = 'Tell Us About Your Institution';
+        }
+        var pilotSubtext = document.getElementById('pilotSubtext');
+        if (pilotSubtext) {
+          pilotSubtext.innerHTML = '<span class="block text-base lg:text-lg lg:whitespace-nowrap">Tell us about your institution and we\'ll follow up with Founding Partner Program details.</span><span class="block text-base lg:text-lg lg:whitespace-nowrap mt-1">Share a few details and we\'ll send you more information.</span>';
+        }
+        scrollToPilotSection();
+      });
+    }
+  })();
 
   function alignEffortWidget() {
     var navLink = document.querySelector('a[href="#challenge"].nav-link');
