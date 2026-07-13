@@ -173,6 +173,7 @@
     body.menu-open{ overflow:hidden; }
     body.menu-open #pilotFab,
     body.menu-open #effortFab{ display:none !important; }
+    body.menu-open #pilotFab{ display:none !important; }
   }
   .challenge-card{
     background:white;
@@ -1267,13 +1268,15 @@
   /* Floating primary CTA -> scrolls to the pilot form */
   #pilotFab{
     position:fixed; right:20px; bottom:20px; z-index:55;
-    display:inline-flex; align-items:center; justify-content:center; gap:0.45rem; width:170px; box-sizing:border-box;
-    background:var(--coral); color:#fff; font-weight:600; font-size:0.82rem;
-    padding:0.6rem 1.1rem; border-radius:999px; text-decoration:none; white-space:nowrap;
+    display:inline-flex; align-items:center; justify-content:center; width:170px; height:39px; box-sizing:border-box;
+    background:var(--coral); color:#fff; font-weight:600; font-size:0.75rem; line-height:1;
+    padding:0 0.3rem; border-radius:999px; text-decoration:none; white-space:nowrap; overflow:hidden;
     box-shadow:0 12px 28px -8px rgba(232,88,94,0.6);
     transition:transform .2s ease, box-shadow .2s ease;
   }
   #pilotFab:hover{ transform:translateY(-2px); box-shadow:0 16px 34px -8px rgba(232,88,94,0.72); }
+  /* Header carries the CTA on desktop; the floating pilot button is mobile/tablet only */
+  @media (min-width:1400px){ #pilotFab{ display:none !important; } }
   #effortPanel{
     position:fixed; right:20px; bottom:132px; transform:translateY(10px);
     z-index:60; width:min(301px, calc(100vw - 28px));
@@ -1316,8 +1319,6 @@
     color:var(--coral-text); border:1px solid var(--coral); background:var(--coral-soft);
     padding:0.5rem 0.9rem; border-radius:999px; font-weight:600; font-size:0.9rem; cursor:pointer;
   }
-  /* On desktop the nav carries the CTA, so retire the floating pilot button there (keep it on mobile, where the nav collapses to a menu). */
-  @media (min-width:1400px){ #pilotFab{ display:none !important; } }
 </style>
 </head>
 <body class="antialiased">
@@ -1527,6 +1528,8 @@
   })();
 </script>
 <!-- HERO -->
+<a href="/partner/" id="pilotFab" aria-label="Fall 2026 Pilot Program">Fall 2026 Pilot Program</a>
+
 <section id="top" class="relative overflow-hidden">
   <div class="absolute inset-0 grain pointer-events-none"></div>
   <div class="max-w-6xl mx-auto px-6 lg:px-8 pt-16 lg:pt-20 relative" style="padding-bottom:101px;">
