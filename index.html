@@ -1393,8 +1393,7 @@
     <div class="flex items-center gap-3">
       <div id="desktopNavCta" class="hidden xl:flex items-center gap-4">
         <a href="https://my.akademai.ai/login" class="nav-link underline-grow pb-1 text-[13px]">Log in</a>
-        <a href="#" id="fpNavBadge" class="nav-fp-badge">Founding Partner Program</a>
-        <a href="#pilot" class="nav-cta-btn">Request Pilot Access</a>
+        <a href="/partner/" class="nav-cta-btn">Fall 2026 Pilot Program</a>
       </div>
       <button id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" class="xl:hidden flex items-center justify-center w-10 h-10 border rounded-sm hairline">
         <svg id="menuIconOpen" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1444,12 +1443,10 @@
       </div>
       <div class="flex flex-col gap-2">
         <a href="https://my.akademai.ai/login" class="mobile-nav-link-top">Log in</a>
-        <a href="#" id="fpNavBadgeMobile" class="mobile-fp-badge">Founding Partner Program</a>
-        <a href="#pilot" class="mobile-cta-btn">Request Pilot Access</a>
+        <a href="/partner/" class="mobile-cta-btn">Fall 2026 Pilot Program</a>
       </div>
     </div>
   </div>
-<a href="#pilot" id="pilotFab" aria-label="Request Pilot Access">Request Pilot Access</a>
 
 <!-- Mobile effort-widget teaser -->
 <button id="effortFab" type="button" aria-label="See instructor effort versus student benefit">
@@ -3146,39 +3143,6 @@
   </div>
 </section>
 
-<div id="fpOverlay" class="fp-overlay hidden">
-  <div class="fp-card" role="dialog" aria-modal="true" aria-labelledby="fpTitle">
-    <button type="button" id="fpCloseX" class="fp-close-x" aria-label="Close">&times;</button>
-    <span class="fp-eyebrow">By invitation</span>
-    <h3 id="fpTitle" class="fp-title">Founding Partner Program</h3>
-    <p class="fp-para">This first cohort is intentionally small, so we can give each institution real time and attention. We'd like to share more so you can see if it's a fit.</p>
-    <p class="fp-para">The program is built for institutions looking to bring the Akademai platform across multiple courses, typically starting anywhere from 2 to 10 courses, with room to grow.</p>
-    <ul class="fp-benefits">
-      <li>Full platform access</li>
-      <li>White-glove onboarding and support from the founders</li>
-      <li>Input into our product roadmap</li>
-      <li>No cost during the partnership term</li>
-      <li>Optional recognition in our published case studies</li>
-    </ul>
-    <p class="fp-explore-label">Take a few minutes to explore the platform</p>
-    <div class="fp-explore-links">
-      <a href="#solution" class="fp-explore-link fp-explore-item">Grounded to course</a>
-      <a href="#persona" class="fp-explore-link fp-explore-item">Instructor persona</a>
-      <a href="#security" class="fp-explore-link fp-explore-item">Security &amp; compliance</a>
-      <a href="#experience" class="fp-explore-link fp-explore-item">See it in action</a>
-      <a href="#about" class="fp-explore-link fp-explore-item">About us</a>
-    </div>
-    <p class="fp-contact">
-      Prefer to talk it through first? Reach out directly:<br>
-      <a href="mailto:founding_partner@akademai.ai">founding_partner@akademai.ai</a>
-    </p>
-    <div class="fp-actions">
-      <button type="button" id="fpApplyBtn" class="fp-apply-btn">Learn about the Program</button>
-      <span id="fpCloseLink" class="fp-close-link">Continue exploring</span>
-    </div>
-  </div>
-</div>
-
 <div id="pilotThanksOverlay" class="pilot-thanks-overlay hidden">
   <div class="pilot-thanks-card">
     <div class="pilot-thanks-icon">
@@ -3701,70 +3665,6 @@
       }
     });
   }
-
-  // Founding Partner Program modal
-  (function(){
-    var fpOverlay = document.getElementById('fpOverlay');
-    var fpNavBadge = document.getElementById('fpNavBadge');
-    var fpNavBadgeMobile = document.getElementById('fpNavBadgeMobile');
-    var fpCloseX = document.getElementById('fpCloseX');
-    var fpCloseLink = document.getElementById('fpCloseLink');
-    var fpApplyBtn = document.getElementById('fpApplyBtn');
-    var fpExploreLinks = document.querySelectorAll('.fp-explore-item');
-    if (!fpOverlay) return;
-
-    function openFp(e){
-      if (e) e.preventDefault();
-      fpOverlay.classList.remove('hidden');
-      var mobileMenu = document.getElementById('mobileMenu');
-      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-        mobileMenu.classList.add('hidden');
-      }
-    }
-    function closeFp(){
-      fpOverlay.classList.add('hidden');
-    }
-
-    if (fpNavBadge) fpNavBadge.addEventListener('click', openFp);
-    if (fpNavBadgeMobile) fpNavBadgeMobile.addEventListener('click', openFp);
-    if (fpCloseX) fpCloseX.addEventListener('click', closeFp);
-    if (fpCloseLink) fpCloseLink.addEventListener('click', closeFp);
-    fpOverlay.addEventListener('click', function(e){
-      if (e.target === fpOverlay) closeFp();
-    });
-
-    // Explore links close the modal and let the page scroll to the section
-    fpExploreLinks.forEach(function(link){
-      link.addEventListener('click', function(){
-        closeFp();
-      });
-    });
-
-    // Apply button: close modal, pre-select institution scope on the pilot form, scroll to it
-    if (fpApplyBtn) {
-      fpApplyBtn.addEventListener('click', function(){
-        closeFp();
-        var pilotScope = document.getElementById('pilotScope');
-        var pilotDetails = document.getElementById('pilotDetails');
-        var pilotFormTitle = document.getElementById('pilotFormTitle');
-        if (pilotScope) {
-          pilotScope.value = 'My Department / Institution';
-          pilotScope.dispatchEvent(new Event('change'));
-        }
-        if (pilotDetails && !pilotDetails.value) {
-          pilotDetails.value = 'Interested in learning more about the Founding Partner Program.';
-        }
-        if (pilotFormTitle) {
-          pilotFormTitle.textContent = 'Tell Us About Your Institution';
-        }
-        var pilotSubtext = document.getElementById('pilotSubtext');
-        if (pilotSubtext) {
-          pilotSubtext.innerHTML = '<span class="block text-base lg:text-lg lg:whitespace-nowrap">Tell us about your institution and we\'ll follow up with Founding Partner Program details.</span><span class="block text-base lg:text-lg lg:whitespace-nowrap mt-1">Share a few details and we\'ll send you more information.</span>';
-        }
-        scrollToPilotSection();
-      });
-    }
-  })();
 
   function alignEffortWidget() {
     var navLink = document.querySelector('a[href="#challenge"].nav-link');
