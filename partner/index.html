@@ -90,7 +90,7 @@ h1{font-family:'Source Serif 4',serif; font-size:2.4rem; font-weight:600; line-h
   transition:transform .15s ease, background .15s ease;
 }
 #partnerSubmit:hover{background:#d94a50; transform:translateY(-1px);}
-#partnerSubmit:disabled{background:#5a6478; cursor:not-allowed; opacity:0.7; transform:none;}
+#partnerSubmit:disabled{background:var(--coral); cursor:not-allowed; opacity:0.55; transform:none;}
 .form-note{font-size:0.72rem; color:#8FA3BD; text-align:center; margin-top:0.7rem; position:relative;}
 .form-note a{text-decoration:underline;}
 
@@ -249,7 +249,7 @@ footer a:hover{color:var(--brand-blue);}
           <input type="email" name="email" required placeholder="Business Email *">
           <input type="text" name="position" required placeholder="Role / Title *">
           <input type="text" name="institution" required placeholder="University / Institution *">
-          <button type="submit" id="partnerSubmit">Request Pilot Details</button>
+          <button type="submit" id="partnerSubmit" disabled>Request Pilot Details</button>
         </form>
         <p class="form-note">Prefer to talk it through first? <a href="mailto:pilot_2026@akademai.ai">pilot_2026@akademai.ai</a></p>
       </div>
@@ -360,6 +360,24 @@ footer a:hover{color:var(--brand-blue);}
   var btn = document.getElementById('partnerSubmit');
   var overlay = document.getElementById('partnerThanks');
 
+  // Submit stays grayed out until all four fields are filled in
+  var requiredFields = ['fullName','email','position','institution'].map(function(n){
+    return form.querySelector('input[name="' + n + '"]');
+  });
+  function formComplete(){
+    return requiredFields.every(function(f){
+      return f.value.trim() !== '' && f.checkValidity();
+    });
+  }
+  function refreshButton(){ btn.disabled = !formComplete(); }
+  requiredFields.forEach(function(f){
+    f.addEventListener('input', refreshButton);
+    f.addEventListener('change', refreshButton);
+  });
+  refreshButton();
+
+  function goHome(){ window.location.href = 'https://akademai.ai'; }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     btn.disabled = true;
@@ -372,21 +390,24 @@ footer a:hover{color:var(--brand-blue);}
       if(res.ok){
         overlay.classList.remove('hidden');
         form.reset();
+        refreshButton();
         if (window.gtag) { gtag('event','generate_lead',{event_category:'partner_page',event_label:'pilot_request'}); }
         if (window.lintrk) { window.lintrk('track', {}); }
+        setTimeout(goHome, 2500);
       } else {
         alert('Something went wrong. Please email pilot_2026@akademai.ai');
       }
     }).catch(function(){
       alert('Something went wrong. Please email pilot_2026@akademai.ai');
     }).finally(function(){
-      btn.disabled = false;
       btn.textContent = 'Request Pilot Details';
+      refreshButton();
     });
   });
 
   document.getElementById('thanksClose').addEventListener('click', function(){
     overlay.classList.add('hidden');
+    goHome();
   });
 })();
 </script>
